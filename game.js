@@ -1,12 +1,9 @@
 var canvas;
 var canvas_context;
 var ball_x = 50;
-
+var ball_speed_x = 8;
 
 window.onload = function() {
-  console.log("Hello World!");
-  console.log(ball_x);
-  console.log("called drawEverything");
   canvas = document.getElementById("game_canvas");
   canvas_context = canvas.getContext("2d");
 
@@ -15,17 +12,31 @@ window.onload = function() {
     moveEverything();
     drawEverything();
   }, 1000/frames_per_second);
+
+  console.log("Hello World!");
+  console.log("called drawEverything");
 }
 
 function moveEverything() {
-    ball_x += 5;
+    ball_x += ball_speed_x;
+    if (ball_x > canvas.width) {
+      ball_speed_x = -ball_speed_x;
+    } else if (ball_x < 0) {
+      ball_speed_x = -ball_speed_x;
+    }
+    console.log(ball_x);
 }
 
 function drawEverything() {
-  canvas_context.fillStyle = "black";
-  canvas_context.fillRect(0, 0, canvas.width, canvas.height);
-  canvas_context.fillStyle = "white";
-  canvas_context.fillRect(0, 50, 10, 100);
-  canvas_context.fillStyle = "red";
-  canvas_context.fillRect(ball_x, 70, 10, 10);
+  // black canvas area
+  colorRect(0, 0, canvas.width, canvas.height, 'black');
+  // white paddle
+  colorRect(0, 50, 10, 100, 'white');
+  // red ball
+  colorRect(ball_x, 70, 10, 10, 'red');
+}
+
+function colorRect(left_x, top_y, width, height, draw_color) {
+  canvas_context.fillStyle = draw_color;
+  canvas_context.fillRect(left_x, top_y, width, height);
 }
